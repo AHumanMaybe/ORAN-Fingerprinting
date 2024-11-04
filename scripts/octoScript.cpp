@@ -23,8 +23,10 @@ int main(){
         uint32_t time = clock->get_time(0);
         std::cout << "Time from octoclock: " << time << std::endl;
 
+        //check list of sensors on device
         std::vector<std::string> names =  clock->get_sensor_names(0);
-        
+
+        //and output them
         for (std::string i: names){
             std::cout << i << "\n";
         }
