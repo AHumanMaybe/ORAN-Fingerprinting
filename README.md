@@ -6,3 +6,11 @@
  - Currently, I'm looking at connecting the octoclock with what I believe will be USRP B210 devices to begin working on synchronization? I'm not entirely sure. Whatever steps are next most likely will rely on the usage of the GNURadio software, [here is a relevant page](https://wiki.gnuradio.org/index.php?title=B200-B205mini_FM_Receiver). I'm assuming right now that here is where I'll be connecting the relevant devices we want to collect timing fingerprints on and I'll need to set up a synchronized environment for accurate collection that can be recorded and observed through GNURadio.
  - After coming back the next week, we set up 2 USRP B210s on and Octoclock-G and used a 3rd B210, also connected to the octoclock, as a transmitter using wireless antenna
  - This data was then captured and saved using GNURadio
+
+
+# Update 12/4/24
+- After confirming device synchronization between 3 B210 USRPs through the Octoclock I moved forward with working on getting and fingerprinting the timing data
+- Currently using TimeDrift.py to look at the difference in recorded time change vs actual
+- Next I'm thinking to look at disconnectin the Octoclock Synchronization and running a get_cur_time() function on each USRP on loop to see how they drift apart from each other
+- Current data showing the time difference is in the two csv files where one is Synchronized using the OctoClock and the other is running the same code but with the OctoClock disconneced
+- Even here there are noticeable time differences between each USRP which varies in such a way that indicates it likely can be fingerprinted to uniquely identify each device
