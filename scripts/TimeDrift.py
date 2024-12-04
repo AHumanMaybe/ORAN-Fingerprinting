@@ -71,6 +71,37 @@ def get_data(iterations):
             time.sleep(1)
 
 
+# Ideally for this function after synchronizing the clocks of the USRPs (can be confirmed through TX/RX or w/above)
+# Disconnect the Octoclock (leaving the USRPs without a syncrhonization signal)
+# Hopefully, this will show the unique changes in the internal oscillators (clocks) of each USRP since they no longer can rely on the OctoClock PPS
+# run first tests at higher iterations (arbitrarily set to limit spamming data collection and collects once per second) since idk how long it will take for drift to occur
+def get_drift(iterations):
+    usrp = uhd.usrp.MultiUSRP("serial=327125E")
+    usrp1 = uhd.usrp.MultiUSRP("serial=33559CF")
+    usrp2 = uhd.usrp.MultiUSRP("serial=329089E")
+    
+    with open('RealDrift.csv', mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Time' , 'Time_327125E', 'Time_33559CF', 'Time_329089E'])
+
+        while iterations > 0:
+            time_now = usrp.get_time_now()
+            now_seconds = time_now.get_real_secs()
+
+            time_now1 = usrp1.get_time_now()
+            now_seconds1 = time_now1.get_real_secs()
+
+            time_now2 = usrp2.get_time_now()
+            now_seconds2 = time_now2.get_real_secs()
+            print("Crunching numbers omnomnom\n")
+
+            writer.writerow([time.time(), now_seconds, now_seconds1, now_seconds2])
+
+            iterations -= 1
+            time.sleep(1)
+
+
+
 get_data(iterations=100) # run for 1000 seconds
 
 # After the loop, read the drift data from the CSV file and plot it
